@@ -237,7 +237,7 @@ define([
                         }
                         data["id"] = _.pluck(clinvar_list, "id");
                     } else if (!model["query_all_genes"]) {
-                        data["gene"] = gene_list;
+                        data["tags"] = gene_list;
                     }
 
                     model["query"] = data;

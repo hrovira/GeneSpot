@@ -15,9 +15,8 @@
             "url": "svc/data/lookups/chromosomes",
             "model": "models/annotations"
         },
-        "genes": {
-            "url": "svc/data/lookups/genes",
-            "model": "models/annotations"
+        "tags": {
+            "url": "svc/data/lookups/tags.json"
         }
     }
 }

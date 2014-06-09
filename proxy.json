@@ -1,39 +1,6 @@
 {
     "proxies" : [
         {
-            "context" : "/svc/datastores",
-            "host" : "csacr.systemsbiology.net",
-            "port" : 80,
-            "https" : false,
-            "changeOrigin" : true,
-            "rewrite" : {
-                "^/svc": "/development"
-            },
-            "xforward": true
-        },
-        {
-            "context" : "/svc/data",
-            "host" : "csacr.systemsbiology.net",
-            "port" : 80,
-            "https" : false,
-            "changeOrigin" : true,
-            "rewrite" : {
-                "^/svc": "/development"
-            },
-            "xforward": true
-        },
-        {
-            "context" : "/svc/collections",
-            "host" : "csacr.systemsbiology.net",
-            "port" : 80,
-            "https" : false,
-            "changeOrigin" : true,
-            "rewrite" : {
-                "^/svc": "/development"
-            },
-            "xforward": true
-        },
-        {
             "context" : "/svc/neo4jdb",
             "host" : "csacr.systemsbiology.net",
             "port" : 80,

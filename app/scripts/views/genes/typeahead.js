@@ -6,14 +6,15 @@ define([ "jquery", "underscore", "backbone" ],
             },
 
             render: function() {
-                var genelist = WebApp.Lookups.get("genes").get("keys");
-                if (_.isEmpty(genelist)) return this;
+                var taglist = WebApp.Lookups.get("tags").get("items");
+                if (_.isEmpty(taglist)) return this;
 
+                var taglabels = _.pluck(taglist, "label");
                 this.$el.typeahead({
                     source: function (q, p) {
                         p(_.compact(_.flatten(_.map(q.toLowerCase().split(" "), function (qi) {
-                            return _.map(genelist, function (geneitem) {
-                                if (geneitem.toLowerCase().indexOf(qi) >= 0) return geneitem;
+                            return _.map(taglabels, function (taglabel) {
+                                if (taglabel.toLowerCase().indexOf(qi) >= 0) return taglabel;
                                 return null;
                             });
                         }))));
@@ -25,8 +26,8 @@ define([ "jquery", "underscore", "backbone" ],
                 return this;
             },
 
-            __typed: function(gene) {
-                this.trigger("typed", gene);
+            __typed: function(word) {
+                this.trigger("typed", word);
                 return "";
             }
         });

@@ -183,7 +183,22 @@ define(["jquery", "underscore", "backbone",
             __load_fdefs_genes: function (tumor_type) {
                 console.debug("fmx-dist.__load_fdefs_genes(" + tumor_type + ")");
 
-                var items_by_gene = _.groupBy(this.model["gene_features"]["by_tumor_type"][tumor_type].get("items"), "gene");
+                var items_by_gene = {};
+                var fn = function(k, item) {
+                    var arr = items_by_gene[k] || [];
+                    arr.push(item);
+                    items_by_gene[k] = arr;
+                };
+
+                _.each(this.model["gene_features"]["by_tumor_type"][tumor_type].get("items"), function(item) {
+                    if (_.has(item, "tags")) {
+                        _.each(item["tags"], function(tag) {
+                            fn(tag, item);
+                        });
+                    }
+                    if (_.has(item, "gene")) fn(item["gene"], item);
+                });
+
                 _.each(items_by_gene, function (item_by_gene, gene) {
                     var fd_by_gene = this.feature_definitions[gene];
                     if (_.isUndefined(fd_by_gene)) fd_by_gene = this.feature_definitions[gene] = {};
@@ -266,7 +281,11 @@ define(["jquery", "underscore", "backbone",
                 _.each(fd_by_gene, function (features, source) {
                     var collapserUL = $feature_selector.find("#tab-pane-" + fdefs_uid_by_source[source]);
                     _.each(_.sortBy(features, "label"), function (feature) {
-                        collapserUL.append(LineItemTpl({ "label": feature["label"], "id": feature["id"], "a_class": "feature-selector-" + axis }));
+                        if (!_.isEmpty(feature["label"])) {
+                            collapserUL.append(LineItemTpl({ "label": feature["label"], "id": feature["id"], "a_class": "feature-selector-" + axis }));
+                        } else if (_.isEqual(feature["source"], "CNVR")) {
+                            collapserUL.append(LineItemTpl({ "label": feature["locus"], "id": feature["id"], "a_class": "feature-selector-" + axis }));
+                        }
                     });
                 });
 
